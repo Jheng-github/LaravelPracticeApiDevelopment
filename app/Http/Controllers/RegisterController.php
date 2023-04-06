@@ -14,7 +14,7 @@ class RegisterController extends Controller
      $validated = $this->validate($request,[
         'name' => ['required', 'string', 'max:255'],
         'email' => ['required', 'email', 'max:255'],
-        'password' => ['required', 'alpha_num:ascii', 'min:6', 'max:12', 'confirmed']
+        'password' => ['required', 'alpha_num:ascii', 'min:6', 'max:12', ' ']
      ]);
      //abort_if() 
      //具體來說，abort_if 函式接受三個參數：
