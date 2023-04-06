@@ -12,9 +12,9 @@ return [
     | as required, but they're a perfect start for most applications.
     |
     */
-
+    //把默認改成 走api這個途徑
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'api',
         'passwords' => 'users',
     ],
 
@@ -41,7 +41,13 @@ return [
             'provider' => 'users',
         ],
     ],
-
+    
+    'guards' => [
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | User Providers
