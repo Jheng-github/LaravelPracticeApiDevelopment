@@ -13,6 +13,9 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    //增加兩個常數,定義成角色 作用是權限判別
+    const ROLE_ADMIN = 1;
+    const ROLE_NORMAL = 2;
     /**
      * The attributes that are mass assignable.
      *
@@ -22,6 +25,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
