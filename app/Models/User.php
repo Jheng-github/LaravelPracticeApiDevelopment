@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\Book;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -67,4 +68,29 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    //製作UserModel 與 BokkModel 的關係
+    //一個使用者可以有很多本書,所以是復數
+    public function books(){
+        return $this->hasMany(Book::class);
+    }
+    //管理者權限製作
+    //Model可以直接用$this去撈出所有欄位,故role =資料庫欄位
+    //return true or false
+    public function isAdmin(){
+        return $this->role === self::ROLE_ADMIN;
+    }
+    //一般使用者權限製作
+    //Model可以直接用$this去撈出所有欄位,故role =資料庫欄位
+    //return true or false
+    public function isNormalUser(){
+        return $this->role === self::ROLE_NORMAL;
+    }
+    //確認是否有權限在policy引用
+    public function hasPermissionToCreateBook(){
+        return $this->isAdmin() || $this->isNormalUser();
+    }
+
+
+
 }
