@@ -12,8 +12,8 @@ Route::prefix('user')->group(function () {
     //只有驗證過登入的人,才可以訪問這個logout的url
     Route::middleware('auth')->group(function () {
         Route::get('logout', [AuthController::class, 'logout']);
-        //製作books這個route 只限定store這個方法 透過BookController 且要經過middle,登入後才能訪問
+        //製作books這個route 只限定only裡面的方法 透過BookController 且要經過middle,登入後才能訪問
         Route::apiResource('books', BookController::class)
-        ->only('store');
+        ->only('store','index');
     });
 });

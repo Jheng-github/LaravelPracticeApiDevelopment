@@ -19,9 +19,10 @@ class AuthController extends Controller
                 'password' => ['required', 'alpha_num', 'min:6', 'max:255'],
             ]
         );
-        //若要修改驗證的資料表需要在congif/auth.php修改
+        //若要修改驗證的資料表需要在config/auth.php修改
         //Guard用於管理驗證和登錄
         //Provider用於定義要從哪個數據庫表中檢索資料。
+        //所以他會到config/auth.php 針對路徑設定去走設定好的JWT 帶有Token,並且回傳 true(才有token) or false   
         $token = Auth::attempt($validate);
 
         //$token 驗證結果放進變數(attempt回傳是true or false)

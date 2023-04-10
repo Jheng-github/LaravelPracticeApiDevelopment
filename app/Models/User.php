@@ -47,7 +47,7 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-     // Rest omitted for brevity
+    // Rest omitted for brevity
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -71,26 +71,40 @@ class User extends Authenticatable implements JWTSubject
 
     //製作UserModel 與 BokkModel 的關係
     //一個使用者可以有很多本書,所以是復數
-    public function books(){
+    public function books()
+    {
         return $this->hasMany(Book::class);
     }
     //管理者權限製作
     //Model可以直接用$this去撈出所有欄位,故role =資料庫欄位
     //return true or false
-    public function isAdmin(){
+    public function isAdmin()
+    {
+        //檢查登入角色是否為admin
         return $this->role === self::ROLE_ADMIN;
     }
     //一般使用者權限製作
     //Model可以直接用$this去撈出所有欄位,故role =資料庫欄位
     //return true or false
-    public function isNormalUser(){
+    public function isNormalUser()
+    {
+        //檢查登入是否是一般使用者
         return $this->role === self::ROLE_NORMAL;
     }
-    //確認是否有權限在policy引用
-    public function hasPermissionToCreateBook(){
+    //確認使用者是否有權限是否可以創造一本書
+    //將會直接使用在policy
+    public function hasPermissionToCreateBook()
+    {
+        //如果是管理者 / 一般使用者 則回傳ture 可以創造書本
+        //也就是非這兩個用戶以外都不能
         return $this->isAdmin() || $this->isNormalUser();
     }
-
-
-
+    //確認使用者是否有權限是否可以觀看所有書籍
+    //將會直接使用在policy
+    public function hasPermissionToViewAnyBook()
+    {
+        //如果是管理者 / 一般使用者 則回傳ture 可以觀看所有書籍
+        //也就是非這兩個用戶以外都不能
+        return $this->isAdmin() || $this->isNormalUser();
+    }
 }
