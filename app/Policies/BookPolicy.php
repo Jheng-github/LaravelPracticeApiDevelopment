@@ -52,7 +52,10 @@ class BookPolicy
      */
     public function delete(User $user, Book $book): bool
     {
-        //
+        //只有自己本身可以刪除自己的書本
+        //或者管理員才可以擁有所有權限
+        //透過getkey 方式取得User的id
+        return $user->getkey() === $book->user_id || $user->isadmin();
     }
 
     /**

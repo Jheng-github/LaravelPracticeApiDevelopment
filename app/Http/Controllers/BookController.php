@@ -69,4 +69,15 @@ class BookController extends Controller
     //並回傳值
     return $book;
     }
+    //刪除某一本書籍
+    public function destroy(Book $book)
+    {
+        //檢查權限是否能夠刪除
+        $this->authorize('delete',[Book::class, $book]);
+        //執行刪除
+        $book->delete();
+        //回傳json
+        return response()->json(['message' => '書本資料已刪除']);
+
+    }
 }
