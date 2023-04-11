@@ -18,9 +18,9 @@ class Book extends Model
         'created_at',
         'user_id',
     ];
-
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
+    //製作一對多與User 資料表的關係
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

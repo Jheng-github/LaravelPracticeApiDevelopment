@@ -21,11 +21,12 @@ class BookPolicy
     /**
      * Determine whether the user can view the model.
      */
-    //確認權限，只能看自己的書籍
+    //確認權限，也能觀看其他人書籍
     public function view(User $user, Book $book): bool
     {
-        // return $user->hasPermissionToViewBook();
-        return $user->id === $book->user_id;
+        return $user->hasPermissionToViewBook();
+        //如果只能觀看自己書籍要參考下面
+        // return $user->id === $book->user_id;
     }
 
     /**

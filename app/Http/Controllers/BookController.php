@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Book;
+use App\Http\Resources\BookCollection;
+use App\Http\Resources\BookResource;
 
 class BookController extends Controller
 {
@@ -31,9 +33,12 @@ class BookController extends Controller
 
         //如果上述驗證都有過,$user 登入者 去取得UserModel中books method 與 BookModel 的關聯
         //並創建一本書
-        return $user->books()->create($validate);
+        //return $user->books()->create($validate);
         //上下這兩個都可以
         // return Book::create(array_merge($validate, ['user_id' => $user->id]));
+
+        //透過Resources 來設定出現json的格式
+        return BookResource::make($user->books()->create($validate));
     }
     //檢視所有使用者書籍
     public function index(Request $request)
@@ -41,7 +46,12 @@ class BookController extends Controller
         //檢視權限是否能夠觀看書籍
         $this->authorize('viewany', [Book::class]);
         //把文章最新更新的一筆顯示在第一筆
-        $books = Book::latest();
+        // $books = Book::latest()->with('user');
+
+        //透過'creator' => UserResource::make($this->whenLoaded('user')),
+        //透過這樣可以防止n+1
+        $books = Book::latest()->with('user');
+
         //設定一個欄位名稱為'owned',如果值為true表示只顯示自己的文章
         //反則跳脫這個判斷式
         if ($request->boolean('owned')) {
@@ -50,7 +60,10 @@ class BookController extends Controller
             $books->where('user_id', Auth::user()->getKey());
         }
         //製作分頁，沒填入數字預設15/一頁
-        return $books->paginate();
+        //return $books->paginate();
+
+        //透過Resources 來設定出現json的格式
+        return BookCollection::make($books->paginate());
     }
 
     //update 更新Book 的資料
@@ -68,7 +81,11 @@ class BookController extends Controller
         //把request進來的值傳入update進行更新
         $book->update($validated);
         //並回傳值
-        return $book;
+        // return $book;
+
+        //透過Resources 來設定出現json的格式
+        //load 防止N+1
+        return  BookResource::make($book->load('user'));
     }
     //刪除某一本書籍
     public function destroy(Book $book)
@@ -83,11 +100,13 @@ class BookController extends Controller
     //要找某一本書,因為會像資料庫丟搜尋,所以需要參數是$book
     public function show(Book $book)
     {
-    //確認使用者有無權限
-     $this->authorize('view',[Book::class,$book]);
+        // type hint
+        //確認使用者有無權限
+        $this->authorize('view', [Book::class, $book]);
 
-     //dd($book);
+        //  return $book;
 
-     return $book;
+        //透過Resources 來設定出現json的格式
+        return BookResource::make($book);
     }
 }
