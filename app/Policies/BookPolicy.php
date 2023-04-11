@@ -11,7 +11,8 @@ class BookPolicy
     /**
      * Determine whether the user can view any models.
      */
-    //確認權限,是誰可以看所有使用者,hasPermissionToViewAnyBook 來自 UserModel
+    //確認權限,觀看所有書籍
+    //hasPermissionToViewAnyBook 來自 UserModel
     public function viewAny(User $user): bool
     {
         return $user->hasPermissionToViewAnyBook();
@@ -20,9 +21,11 @@ class BookPolicy
     /**
      * Determine whether the user can view the model.
      */
+    //確認權限，只能看自己的書籍
     public function view(User $user, Book $book): bool
     {
-        //
+        // return $user->hasPermissionToViewBook();
+        return $user->id === $book->user_id;
     }
 
     /**

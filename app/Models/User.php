@@ -107,4 +107,11 @@ class User extends Authenticatable implements JWTSubject
         //也就是非這兩個用戶以外都不能
         return $this->isAdmin() || $this->isNormalUser();
     }
+    //確認使用者是否有權限可以看自己的書
+    public function hasPermissionToViewBook()
+    {
+        //如果是管理者 / 一般使用者 則回傳ture 可以觀看自己的書籍
+        //也就是非這兩個用戶以外都不能
+        return $this->isadmin() || $this->isNormalUser();
+    }
 }
