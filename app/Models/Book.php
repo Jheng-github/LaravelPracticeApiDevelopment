@@ -23,4 +23,11 @@ class Book extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    //多對多連結
+    //一本書只能有一個作者,但可以有很多圖片
+    //但目前看起來好像跟user 表單沒關係,可是因為資料都可以存在第三張表 , 所以可以透過第三張表 去取得user的關係
+    public function images(){
+        return $this->morphMany(Image::class, 'imageable');
+    }
 }

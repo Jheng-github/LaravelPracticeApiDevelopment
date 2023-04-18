@@ -75,6 +75,15 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Book::class);
     }
+    //製作與中介表的連結 
+    //多對多連結
+    //一個作者可以擁有很多書但只能有一張大頭貼
+    //第二個參數應該是自定義
+    public function image(){
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
+
     //管理者權限製作
     //Model可以直接用$this去撈出所有欄位,故role =資料庫欄位
     //return true or false

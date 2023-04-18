@@ -12,7 +12,7 @@ return [
     | based disks are available to your application. Just store away!
     |
     */
-
+    //如果FILESYSTEM_DISK沒設定,就會預設走local
     'default' => env('FILESYSTEM_DISK', 'local'),
 
     /*
@@ -27,12 +27,12 @@ return [
     | Supported Drivers: "local", "ftp", "sftp", "s3"
     |
     */
-
+//當你disk走 local /  public 的設定....
     'disks' => [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => storage_path('app'), //laravelbook/storage/app
             'throw' => false,
         ],
 
