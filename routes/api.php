@@ -28,25 +28,16 @@ Route::prefix('user')->group(function () {
     });
     Route::post('photo', function (Request $request) {
         
-        //這個參數找到的book第二本書 也就是 Book 裡面id=2
-        //他會存在imageable_id = 2  , 如果 find(1) imageable_id = 1  
-        //imageable_type = Book
+        //找出書本關聯,去call Model method(關聯資料)
+        //進入create 新增資料庫
+        //因為Driver 已經設定Gcp 所以上傳位置會從本地到Gcp
         $book = App\Models\Book::find(2);
-        //$book->images()  <=== 這個call的是 Book Model 裡面的 images()方法
-        //其意思是要在Book 裏面 id=2 的書本裡面增加一張圖片
+       foreach($request -> file('111') as $file){
         $book->images()->create([
-            'url' => $request->file('111')->store('books'),
+            'url' => $file->store(),
         ]);
-        return $book->images;
-
-        //同上，我可以透過User Model 找到第一本上 也就是 imageable_id = 1
-        // imageable_type = User
-        // $user = App\Models\User::find(1);
-        //  //接著user去call image()  這個call的是 User Model 裡面的 image()方法
-        // $user->image()->create([
-        //     'url' => $request->file('111')->store('users'),
-        // ]);
-        // return $user->image;
+       }
+       return '上傳成功';
 
        
     });
