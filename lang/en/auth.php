@@ -17,5 +17,5 @@ return [
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'duplicate email' => '重複的email',
-
+    'result' => '信件發送成功(J)',
 ];

@@ -12,9 +12,11 @@ return [
     | as required, but they're a perfect start for most applications.
     |
     */
-    //把默認改成 走api這個途徑
+  
     'defaults' => [
+          //把默認改成 走api這個途徑
         'guard' => 'api',
+        //這邊意味著如果 Password::broker();<==就會預設走user這條路線
         'passwords' => 'users',
     ],
 
@@ -99,8 +101,11 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            //按了忘記密碼的人,記載這個table
             'table' => 'password_reset_tokens',
+            //設定其失效時間
             'expire' => 60,
+            //可發送次數(分鐘)
             'throttle' => 60,
         ],
     ],
