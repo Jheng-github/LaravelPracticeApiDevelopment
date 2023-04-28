@@ -30,5 +30,13 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    //第三方的登入GitHub
+    'github' => [
+        //把github的內容加入到.env裏面
+        'client_id' => env('GITHUB_CLIENT_ID'),
+        'client_secret' => env('GITHUB_CLIENT_SECRET'),
+        //// 第三方服務驗證完後要重新導向專案的route
+        'redirect' => env('GITHUB_REDIRECT'), 
+    ],
 
 ];

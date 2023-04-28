@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\ThirdPartyAuthController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('oauth');
 });
 
 //設定一個router 名為 password.reset 讓laravel 可以吃到
@@ -22,3 +26,12 @@ Route::get('/', function () {
 Route::get('/reset-password/{token}', function () {
     return '重設密碼的頁面';
 })->name('password.reset');
+
+
+
+
+
+
+Route::get('/auth/github', [ThirdPartyAuthController::class, 'redirectToGithub']);
+
+Route::get('/auth/github/callback', [ThirdPartyAuthController::class, 'handleGithubCallback']);
