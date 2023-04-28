@@ -15,10 +15,17 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
+        //原有不動
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        //把文件需求新增進來
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+            // ... other providers
+            \SocialiteProviders\Facebook\FacebookExtendSocialite::class . '@handle',
+        ],
     ];
+
 
     /**
      * Register any events for your application.

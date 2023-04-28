@@ -27,11 +27,13 @@ Route::get('/reset-password/{token}', function () {
     return '重設密碼的頁面';
 })->name('password.reset');
 
-
-
-
-
-
+//github login
 Route::get('/auth/github', [ThirdPartyAuthController::class, 'redirectToGithub']);
 
 Route::get('/auth/github/callback', [ThirdPartyAuthController::class, 'handleGithubCallback']);
+
+
+//facebook login
+Route::get('/auth/facebook', [ThirdPartyAuthController::class, 'redirectToFacebook']);
+
+Route::get('/auth/facebook/callback', [ThirdPartyAuthController::class, 'handleFacebookCallback']);
