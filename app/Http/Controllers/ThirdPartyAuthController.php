@@ -18,7 +18,7 @@ class ThirdPartyAuthController extends Controller
 
     public function handleGithubCallback()
     {
-
+        try{
         $githubUser = Socialite::driver('github')->user();
         // dd($githubUser);
         // 使用 `updateOrCreate` 方法更新或新增資料庫中的使用者資料
@@ -35,7 +35,11 @@ class ThirdPartyAuthController extends Controller
             'github_refresh_token' => $githubUser->refreshToken, // 用來重新取得 access token 的 refresh token
             'email_verified_at' => now(), // 認證信箱的時間設為現在
         ]);
-
+    }
+    catch (\Exception $exception) {
+        //拋出錯誤
+        throw $exception;
+    };
         Auth::login($user);
 
         return $user;
