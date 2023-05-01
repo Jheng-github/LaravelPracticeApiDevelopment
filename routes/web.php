@@ -37,3 +37,8 @@ Route::get('/auth/github/callback', [ThirdPartyAuthController::class, 'handleGit
 Route::get('/auth/facebook', [ThirdPartyAuthController::class, 'redirectToFacebook']);
 
 Route::get('/auth/facebook/callback', [ThirdPartyAuthController::class, 'handleFacebookCallback']);
+
+//goole login
+Route::get('/auth/google', [ThirdPartyAuthController::class, 'redirectToGoogle']);
+
+Route::get('/auth/google/callback', [ThirdPartyAuthController::class, 'handleGoogleCallback']);

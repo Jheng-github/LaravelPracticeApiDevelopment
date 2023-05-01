@@ -23,6 +23,14 @@ class ThirdPartyAuthController extends Controller
         return Socialite::driver('facebook')->redirect();
     }
 
+        //google
+        public function redirectTogoogle()
+        {
+            // 轉址到第三方認證
+            return Socialite::driver('google')->redirect();
+        }
+
+
     //github驗證
     public function handleGithubCallback()
     {
@@ -75,4 +83,29 @@ class ThirdPartyAuthController extends Controller
         Auth::login($user);
         return $user;
     }
+
+    //Google驗證
+        public function handleGoogleCallback()
+        {
+
+            try {
+               $googleUser = Socialite::driver('google')->user();
+                // 使用 `updateOrCreate` 方法更新或新增資料庫中的使用者資料
+                // 第一個參數是搜尋條件，如果有符合的資料，就更新該筆資料
+                // 如果沒有符合的資料，就新增一筆資料
+                $user = User::updateOrCreate([
+                    //用mail當作搜尋條件
+                    'email' => $googleUser->email,
+                ], [
+                    'name' => $googleUser->nickname, // 更新或新增使用者名稱
+                    'google_id' => $googleUser->id, // 更新或新增使用者名稱
+                    'email_verified_at' => now(), // 認證信箱的時間設為現在
+                ]);
+            } catch (\Exception $exception) {
+                //拋出錯誤
+                throw $exception;
+            };
+            Auth::login($user);
+            return $user;
+        }
 }
