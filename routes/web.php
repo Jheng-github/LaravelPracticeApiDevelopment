@@ -42,3 +42,8 @@ Route::get('/auth/facebook/callback', [ThirdPartyAuthController::class, 'handleF
 Route::get('/auth/google', [ThirdPartyAuthController::class, 'redirectToGoogle']);
 
 Route::get('/auth/google/callback', [ThirdPartyAuthController::class, 'handleGoogleCallback']);
+
+//line login
+Route::get('/auth/line', [ThirdPartyAuthController::class, 'redirectToLine']);
+
+Route::get('/auth/line/callback', [ThirdPartyAuthController::class, 'handleLineCallback']);

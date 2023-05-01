@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 class ThirdPartyAuthController extends Controller
-{   
+{
     //github
     public function redirectToGithub()
     {
@@ -23,12 +23,19 @@ class ThirdPartyAuthController extends Controller
         return Socialite::driver('facebook')->redirect();
     }
 
-        //google
-        public function redirectTogoogle()
-        {
-            // 轉址到第三方認證
-            return Socialite::driver('google')->redirect();
-        }
+    //google
+    public function redirectToGoogle()
+    {
+        // 轉址到第三方認證
+        return Socialite::driver('google')->redirect();
+    }
+
+    //line
+    public function redirectToLine()
+    {
+        // 轉址到第三方認證
+        return Socialite::driver('line')->redirect();
+    }
 
 
     //github驗證
@@ -85,27 +92,51 @@ class ThirdPartyAuthController extends Controller
     }
 
     //Google驗證
-        public function handleGoogleCallback()
-        {
+    public function handleGoogleCallback()
+    {
 
-            try {
-               $googleUser = Socialite::driver('google')->user();
-                // 使用 `updateOrCreate` 方法更新或新增資料庫中的使用者資料
-                // 第一個參數是搜尋條件，如果有符合的資料，就更新該筆資料
-                // 如果沒有符合的資料，就新增一筆資料
-                $user = User::updateOrCreate([
-                    //用mail當作搜尋條件
-                    'email' => $googleUser->email,
-                ], [
-                    'name' => $googleUser->nickname, // 更新或新增使用者名稱
-                    'google_id' => $googleUser->id, // 更新或新增使用者名稱
-                    'email_verified_at' => now(), // 認證信箱的時間設為現在
-                ]);
-            } catch (\Exception $exception) {
-                //拋出錯誤
-                throw $exception;
-            };
-            Auth::login($user);
-            return $user;
-        }
+        try {
+            $googleUser = Socialite::driver('google')->user();
+            // 使用 `updateOrCreate` 方法更新或新增資料庫中的使用者資料
+            // 第一個參數是搜尋條件，如果有符合的資料，就更新該筆資料
+            // 如果沒有符合的資料，就新增一筆資料
+            $user = User::updateOrCreate([
+                //用mail當作搜尋條件
+                'email' => $googleUser->email,
+            ], [
+                'name' => $googleUser->nickname, // 更新或新增使用者名稱
+                'google_id' => $googleUser->id, // 更新或新增使用者名稱
+                'email_verified_at' => now(), // 認證信箱的時間設為現在
+            ]);
+        } catch (\Exception $exception) {
+            //拋出錯誤
+            throw $exception;
+        };
+        Auth::login($user);
+        return $user;
+    }
+    //line登入
+    public function handleLineCallback()
+    {
+
+        try {
+            $lineUser = Socialite::driver('line')->user();
+            // 使用 `updateOrCreate` 方法更新或新增資料庫中的使用者資料
+            // 第一個參數是搜尋條件，如果有符合的資料，就更新該筆資料
+            // 如果沒有符合的資料，就新增一筆資料
+            $user = User::updateOrCreate([
+                //用mail當作搜尋條件
+                'email' => $lineUser->email,
+            ], [
+                'name' => $lineUser->name, // 更新或新增使用者名稱
+                'google_id' => $lineUser->id, // 更新或新增使用者名稱
+                'email_verified_at' => now(), // 認證信箱的時間設為現在
+            ]);
+        } catch (\Exception $exception) {
+            //拋出錯誤
+            throw $exception;
+        };
+        Auth::login($user);
+        return $user;
+    }
 }

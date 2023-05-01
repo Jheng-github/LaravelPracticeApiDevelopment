@@ -34,6 +34,10 @@
                     <a href="/auth/google" class="text-sm text-gray-500"> login with google <span
                             aria-hidden="true">→</span></a>
                 </div>
+                <div class=" flex items-center justify-center gap-x-4">
+                    <a href="/auth/line" class="text-sm text-gray-500"> login with line <span
+                            aria-hidden="true">→</span></a>
+                </div>
             </div>
         </div>
     </div>

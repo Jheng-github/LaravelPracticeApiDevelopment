@@ -25,10 +25,15 @@ class EventServiceProvider extends ServiceProvider
             \SocialiteProviders\Facebook\FacebookExtendSocialite::class . '@handle',
         ],
         //把文件需求新增進來(google)
-            \SocialiteProviders\Manager\SocialiteWasCalled::class => [
-                // ... other providers
-                \SocialiteProviders\Google\GoogleExtendSocialite::class.'@handle',
-            ],
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+            // ... other providers
+            \SocialiteProviders\Google\GoogleExtendSocialite::class . '@handle',
+        ],
+         //把文件需求新增進來(line)
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+            // ... other providers
+            \SocialiteProviders\Line\LineExtendSocialite::class . '@handle',
+        ],
     ];
 
 
