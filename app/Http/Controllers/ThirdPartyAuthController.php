@@ -60,12 +60,11 @@ class ThirdPartyAuthController extends Controller
             // 使用 `updateOrCreate` 方法更新或新增資料庫中的使用者資料
             // 第一個參數是搜尋條件，如果有符合的資料，就更新該筆資料
             // 如果沒有符合的資料，就新增一筆資料
-
             $user = User::updateOrCreate([
                 //用mail當作搜尋條件
                 'email' => $facebookUser->email,
             ], [
-                'name' => $facebookUser->nickname, // 更新或新增使用者名稱
+                'name' => $facebookUser->name, // 更新或新增使用者名稱
                 'facebook_id' => $facebookUser->id, // 更新或新增使用者名稱
                 'email_verified_at' => now(), // 認證信箱的時間設為現在
             ]);

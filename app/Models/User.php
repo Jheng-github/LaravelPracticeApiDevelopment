@@ -32,6 +32,7 @@ class User extends Authenticatable implements JWTSubject
         'github_token',
         'facebook_id',
         'email_verified_at',
+        'google_id',
     ];
 
     /**
