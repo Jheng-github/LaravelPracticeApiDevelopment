@@ -7,6 +7,8 @@ use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserEmailVerification;
 
 class RegisterController extends Controller
 {
@@ -19,12 +21,6 @@ class RegisterController extends Controller
             'password' => ['required', 'alpha_num:ascii', 'min:6', 'max:12', ' '],
             '111' => ['nullable', 'image'],
         ]);
-        //abort_if() 
-        //具體來說，abort_if 函式接受三個參數：
-        // 第一個參數是一個條件式，如果該條件為真，則函式會執行中斷並返回 HTTP 錯誤頁面。
-        // 第二個參數是中斷時所要回傳的 HTTP 錯誤碼。
-        // 第三個參數是中斷時所要顯示的錯誤訊息。在lang/en的auth.php執行設定對應的參數要顯示什麼
-        // __('auth.duplicate email')//auth代表檔案lang/en這隻檔案底下的auth這隻檔案duplicate email 則是名字
 
         abort_if(
             User::where('email', $request->input('email'))->first(),
@@ -52,6 +48,12 @@ class RegisterController extends Controller
                     'url' => $path,
                 ]);
             }
+            //用Mail的method去call $user 再去使用send() 這個method 
+            // 把剛剛創造的資料 傳遞給 UserEmailVerification （自己創建的
+            
+            // UserEmailVerification 是自己創建的一個檔案,
+            //UserEmailVerification 
+            Mail::to($user)->send( new UserEmailVerification($user));
         }
         //如果try裡面異常,接住錯誤
         catch (\Exception $exception) {
@@ -63,15 +65,9 @@ class RegisterController extends Controller
         //如果沒try沒問題沒錯誤,就進行commit把這段對資料庫的動作存取起來
         DB::commit();
 
+        return response([
+            'data' => $user
 
-        //data 就是把內容包起來的東西
-        // "data": {
-        // "name": "jheng123",
-        // "email": "jheng123@example.com",
-        // "updated_at": "2023-04-06T02:58:54.000000Z",
-        // "created_at": "2023-04-06T02:58:54.000000Z",
-        // "id": 2
-        // }
-        return response(['data' => $user]);
+        ],201);
     }
 }
