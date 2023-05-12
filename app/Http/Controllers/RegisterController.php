@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendEmail;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,6 +10,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UserEmailVerification;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class RegisterController extends Controller
 {
@@ -48,12 +53,15 @@ class RegisterController extends Controller
                     'url' => $path,
                 ]);
             }
-            //用Mail的method去call $user 再去使用send() 這個method 
-            // 把剛剛創造的資料 傳遞給 UserEmailVerification （自己創建的
-            
-            // UserEmailVerification 是自己創建的一個檔案,
-            //UserEmailVerification 
+            //註冊之後發出驗證信,可能你需要打開驗證信之後才能使用某些功能之類的
+            event(new Registered($user));
+            //註冊後純寄信使用,可能像是 歡迎你註冊...等
             Mail::to($user)->send( new UserEmailVerification($user));
+
+            // dispatch(new UserEmailVerification($user));
+            //SendEmail::dispatch($user);
+            // dispatch(new \App\Jobs\SendEmail($user));
+
         }
         //如果try裡面異常,接住錯誤
         catch (\Exception $exception) {

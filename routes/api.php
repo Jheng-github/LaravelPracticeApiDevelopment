@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Request;
 use App\Http\Controllers\PasswordRestLinkController;
 use App\Http\Controllers\NewPasswordController;
+use App\Http\Controllers\VerifyEmailController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 //設定群組,預設連接 http://127.0.0.1:8000/api/user/....等
 Route::prefix('user')->group(function () {
@@ -35,7 +37,6 @@ Route::prefix('user')->group(function () {
 
 
 
-
     //測試打圖片
     Route::post('photo', function (Request $request) {
 
@@ -51,3 +52,16 @@ Route::prefix('user')->group(function () {
         return '上傳成功';
     });
 });
+
+// // 驗證信
+Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
+    // ->middleware(['throttle:6,1'])
+    ->name('verification.verify');
+
+
+
+// 重新發驗證信
+Route::post('/email/verify/resend', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth:api', 'throttle:6,1'])->name('verification.send');

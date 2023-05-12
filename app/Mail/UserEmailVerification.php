@@ -10,14 +10,15 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User;
 use Illuminate\Mail\Mailables\Address;
+use App\Jobs\SendEmail;
 
 
-class UserEmailVerification extends Mailable
+class UserEmailVerification extends Mailable //implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
 
-    protected $user;
+    private $user;
 
     /**
      * Create a new message instance.

@@ -9,8 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Models\Book;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail 
 {
     use HasApiTokens, HasFactory, Notifiable;
 
