@@ -13,7 +13,7 @@ use Illuminate\Mail\Mailables\Address;
 use App\Jobs\SendEmail;
 
 
-class UserEmailVerification extends Mailable //implements ShouldQueue
+class UserEmailVerification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 

@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 
 class SendEmail implements ShouldQueue
 {
@@ -35,6 +36,7 @@ class SendEmail implements ShouldQueue
 
         if ($user) {
             Mail::to($user->email)->send(new UserEmailVerification($user));
+            event(new Registered($user));
         }
     }
 }

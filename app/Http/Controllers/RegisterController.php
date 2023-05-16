@@ -56,11 +56,7 @@ class RegisterController extends Controller
             //註冊之後發出驗證信,可能你需要打開驗證信之後才能使用某些功能之類的
             event(new Registered($user));
             //註冊後純寄信使用,可能像是 歡迎你註冊...等
-            Mail::to($user)->send( new UserEmailVerification($user));
-
-            // dispatch(new UserEmailVerification($user));
-            //SendEmail::dispatch($user);
-            // dispatch(new \App\Jobs\SendEmail($user));
+             Mail::to($user)->send( new UserEmailVerification($user));
 
         }
         //如果try裡面異常,接住錯誤

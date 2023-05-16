@@ -3,12 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Notifications\verifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Models\Book;
+use App\Notifications\VerifyEmail as NotificationsVerifyEmail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -133,4 +136,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         //也就是非這兩個用戶以外都不能
         return $this->isadmin() || $this->isNormalUser();
     }
+
+          public function sendEmailVerificationNotification() {
+        $this->notify(new VerifyEmail);
+    }
+
+    
+
 }

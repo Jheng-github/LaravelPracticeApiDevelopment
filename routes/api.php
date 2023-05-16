@@ -7,7 +7,7 @@ use App\Http\Controllers\BookController;
 use App\Models\Book;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Request;
-use App\Http\Controllers\PasswordRestLinkController;
+use App\Http\Controllers\PasswordResetLinkController;
 use App\Http\Controllers\NewPasswordController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -52,11 +52,10 @@ Route::prefix('user')->group(function () {
         return '上傳成功';
     });
 });
-
+// VerifyEmailController::class, '__invoke
 // // 驗證信
-Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
-    // ->middleware(['throttle:6,1'])
-    ->name('verification.verify');
+Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class , 'store'])
+->middleware(['signed'])->name('verification.verify');
 
 
 
@@ -65,3 +64,7 @@ Route::post('/email/verify/resend', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth:api', 'throttle:6,1'])->name('verification.send');
+
+Route::get('/test',function(){
+    dd(route('verification.verify',['id' => 123, 'hash'=> 'i-am-hash']));
+});

@@ -6,8 +6,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Symfony\Component\HttpFoundation\Response;
-
-class PasswordRestLinkController extends Controller
+//PasswordRestLinkController PasswordResetLinkController
+class PasswordResetLinkController extends Controller
 {
     //寄信
     public function store(Request $request)
